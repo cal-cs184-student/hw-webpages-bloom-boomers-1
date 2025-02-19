@@ -28,22 +28,22 @@
 	<body>
 		<div class="container">
 		<h1>CS184/284A Spring 2025 Homework 1 Write-Up</h1>
-		<div style="text-align: center;">Names: </div>
+		<div style="text-align: center;">Names: Mateus Ikezaki and Hima Kolavennu </div>
 
 		<br>
 
-		Link to webpage: <a href="https://cal-cs184-student.github.io/hw-webpages-bloom-boomers-1/hw1/index.html">cs184.eecs.berkeley.edu/sp25</a>
+		Link to webpage: <a href="https://cal-cs184-student.github.io/hw-webpages-bloom-boomers-1/hw1/index.html">https://cal-cs184-student.github.io/hw-webpages-bloom-boomers-1/hw1/index.html</a>
 		
 		<br>
 
-		Link to GitHub repository: <a href="https://github.com/cal-cs184-student/sp25-hw1-bloom-boomers">cs184.eecs.berkeley.edu/sp25</a>
+		Link to GitHub repository: <a href="https://github.com/cal-cs184-student/sp25-hw1-bloom-boomers">https://github.com/cal-cs184-student/sp25-hw1-bloom-boomers</a>
 
 		<!--
 		We've already added one heading per task, to make your write-up as navigable when grading. Please fit your write-up within these sections!
 		-->
 
 		<h2>Overview</h2>
-		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
+		In this homework we practiced primarily Antialiasing techniques discussed in lecture. We implemented triangle rasterizing algorithms, as well as sampling methods such as supersampling, pixel sampling and level sampling. We also implemented transformation matrices. As digital artists, it was very intersting to implement resizing techniques that are so common in our usual workflow.
 
 		<h2>Task 1: Drawing Single-Color Triangles</h2>
 		<p>We largely followed the pseudo-code provided in the lecture; therefore, our algorithm assumes that the vertices are given in a counterclockwise direction.</p>
@@ -97,7 +97,6 @@
 			  <tr>
 				<td style="text-align: center;">
 				  <img src="task1.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
 				</td>
 			  </tr>
 			</table>
@@ -185,7 +184,7 @@
 		because if a point is closer to a particular vertex in a triangle, the color at that vertex will be weighted 
 		more than the colors at the other 2 vertices when computing that point’s final color.
 		<img src="./images/interpolation_triangle.png" width="400px"/>
-		<img src="./images/color_wheel.png" width="400px"/>
+		<img src="./images/color_wheel.png" width="800px"/>
 
 		<br>
 
@@ -211,10 +210,31 @@
 						Level sampling solves these alias artifacts, by interpolating between mipmap levels. Interpolating in between levels filters out higher frequencies, with that said, level sampling is slightly more expensive than pixel sampling because it inherently requires double the amount of operations (as we are effectively executing pixel sampling twice). Additionally, level sampling may have unwanted properties such as overblur, in other words the output quality may be worse than supersampling. 
 			</li>
 		</ul>
-		<img src="images/l_zerop_nearest.png" width="400px"/>
-		<img src="images/l_zerop_linear.png" width="400px"/>
-		<img src="images/l_nearestp_nearest.png" width="400px"/>
-		<img src="images/l_nearestp_linear.png" width="400px"/>
+		
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+					<img src="images/l_zerop_nearest.png" width="400px"/>
+					<figcaption>L_ZERO, P_NEAREST</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="images/l_zerop_linear.png" width="400px"/>
+					<figcaption>L_ZERO, P_LINEAR</figcaption>
+				</td>
+			  </tr>
+			  <tr>
+				<td style="text-align: center;">
+					<img src="images/l_nearestp_nearest.png" width="400px"/>
+					<figcaption>L_NEAREST, P_NEAREST</figcaption>
+				</td>
+				<td style="text-align: center;">
+					<img src="images/l_nearestp_linear.png" width="400px"/>
+					<figcaption>L_NEAREST, P_LINEAR</figcaption>
+				</td>
+			  </tr>
+			</table>
+		</div>
 
 		</div>
 	</body>
