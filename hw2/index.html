@@ -171,7 +171,7 @@
 		<ul>
 			<li>
 				Diagram we used to visualize flips and keep track of what mesh elements to change:
-				<img src="images/edge_flip_diagram.jpeg" width="400px"/>
+				<img src="images/edge_flip_diagram.jpeg" width="800px"/>
 			</li>
 			<li>
 				We implemented flipEdge by following the diagram provided as well as our own diagram closely. We first
@@ -327,7 +327,15 @@
 						</td>
 					  </tr>
 					</table>
-				</div>		
+				</div>
+			</li>
+			<li>
+				With so many steps and elements to keep track of, splitting was particularly troublesome for us. Essentially,
+				every time we split an edge, we were getting a bug in which a connecting face had a chance to simply vanish. 
+				This bug was very confusing to us, because some faces would only sometimes vanish, seemingly at random. We spent
+				an entire day trying to fix it. After going to office hours, it turned out that we were assigning the wrong face 
+				to one of the half-edges due to a typo.
+			</li>
 		</ul>
 		
 		<h3>Part 6: Loop subdivision for mesh upsampling</h3>
@@ -391,12 +399,12 @@
 						</td>
 						<td style="text-align: center;">
 							<img src="images/nice_cube_1.jpeg" width="400px"/>
-							<figcaption>After Loop Subdivision</figcaption>
+							<figcaption>After 3 Loop Subdivisions </figcaption>
 						</td>
 
 						<td style="text-align: center;">
 							<img src="images/nice_cube_2.jpeg" width="400px"/>
-							<figcaption>After Loop Subdivision (another angle)</figcaption>
+							<figcaption>After 3 Loop Subdivisions (front view)</figcaption>
 						</td>
 					  </tr>
 					</table>
