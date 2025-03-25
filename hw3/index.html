@@ -48,8 +48,16 @@
 		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
 
 		<h2>Part 1: Ray Generation and Scene Intersection</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
+		First we create the transformation matrix to translate the coordinate input to camera space.
+		We see in the diagram that in camera space, the bottom left corner of the camera space is at 
+		(-tan(0.5 * hFov), -tan(0.5 * vFov), -1), while the upper corner is at (tan(0.5 * hFov), tan(0.5 * vFov), -1),
+		so we choose the u and v vectors to be u = {2 * tan(radians(0.5 * hFov)), 0, 0} and v = {0, 2 * tan(radians(0.5 * vFov)), 0}.
+		Then we pick our origin point as o = {-tan(radians(0.5 * hFov)), -tan(radians(0.5 * vFov)), 1}, thus we have our
+		transformation matrix T. We tranform the input coordinates with T. We create a directional vector 
+		dirVector = Vector3D(transformed_input.x, transformed_input.y, -1) and create the camera ray newRay. The camera ray
+		has origin at (0,0,0) (camera space) and its direction is dirVector. We set the min_t to the camera's nClip and 
+		max_t to the fClip. Lastly, we return a ray with origin at the camera's position, and direction set to 
+		this->c2w * newRay.d.
 		<p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each <b>td</b> is a column in that row. You might find this useful for framing and showing your result images in an organized fashion.</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
