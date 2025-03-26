@@ -179,7 +179,35 @@
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
 		<h2>Part 4: Global Illumination</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<div>
+			<h3>Indirect Lighting Function Walkthrough</h3>  
+			<p><code>at_least_one_bounce_radiance_helper</code>:</p>
+			
+			<ul>
+				<li>1. If <code>depth == 0</code>, return <span class="highlight">black</span> since we don't consider light contribution beyond the maximum ray depth.</li>
+				
+				<li>2. Call <code>one_bounce_radiance(r, isect)</code> to compute <span class="highlight">direct lighting</span>.</li>
+				
+				<li>3. Sampling Indirect Lighting (If <code>depth > 1</code>):
+					<ul>
+						<li>Sample an incoming direction <code>wi</code> using the BSDF: <code>isect.bsdf->sample_f(w_out, &wi, &pdf)</code>.</li>
+						<li>Convert <code>wi</code> to world space (<code>wi2w</code>) for the next bounce.</li>
+						<li>Create a new <span class="highlight">sample ray</span> originating from the hit point <code>hit_p</code> in direction <code>wi2w</code>.</li>
+					</ul>
+				</li>
+				
+				<li>4. Russian Roulette Termination:
+					<ul>
+						<li>Use a coin flip (<code>coin_flip(cpdf)</code>) to decide whether to terminate.</li>
+						<li>If the ray hits another surface, recursively compute <span class="highlight">indirect lighting</span> using <code>at_least_one_bounce_radiance(sample_ray, sample_isect)</code>.</li>
+						<li>Compute the indirect radiance contribution using the rendering equation:
+							<pre>L_indirect = (incoming_radiance * BSDF * cosθ) / (PDF * cpdf)</pre>
+						</li>
+						<li>Accumulate <code>L_out</code> if <code>isAccumBounces</code> is true. Otherwise, return the L value of the last ray.</li>
+					</ul>
+				</li>
+					</ul>
+		</div>		
 
 		<h2>Part 5: Adaptive Sampling</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
