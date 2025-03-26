@@ -105,8 +105,86 @@
 		</div>
 		
 		<h2>Part 2: Bounding Volume Hierarchy</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<ul>
+			<li>In our BVH construction algorithm, we start by initializing (for the current node):
+			  <ul>
+				<li>Bounding box</li>
+				<li>Minimum/maximum x, y, and z positions</li>
+			  </ul>
+			</li>
+			<li>We then iterate through the primitives stored in each node of the BVH, starting from the root, to:
+			  <ul>
+				<li>Update the minimum/maximum positions when encountering a primitive whose centroid is less than the current minimum or greater than the current maximum.</li>
+				<li>Increment a count of primitives in the current node</li>
+				<li>Expand the bounding box to contain each primitive</li>
+			  </ul>
+			</li>
+			<li>If the count of primitives is less than the maximum leaf size, the current node is a leaf, so we create a BVH leaf node with <code>l</code> and <code>r</code> set to <code>null</code>, and <code>start</code> and <code>end</code> set to the start and end values passed into the current function call. We then return this leaf node.</li>
+			<li>Otherwise, we calculate the maximum difference between the minimum and maximum for each x, y, and z dimension. This is because the heuristic we’re using to determine how to split is choosing the dimension with the largest range of values. We then split at the midpoint of that dimension. We find the midpoint by:
+			  <ul>
+				<li>Partitioning the primitives into two groups: those with centroid position &lt; midpoint to the left, and the rest go to the right.</li>
+				<li>Creating an iterator called <code>mid</code> which points to the first element of the right group</li>
+			  </ul>
+			</li>
+			<li>At the end, we create a new inner node, where its left child is a recursive call to <code>construct_bvh(start, mid, max_leaf_size)</code> and its right child is <code>construct_bvh(mid, end, max_leaf_size)</code>. We return this inner node.</li>
+			<li>To prevent infinite recursion, we check if <code>start == mid</code> or <code>mid == end</code>. If true, we return a leaf node since all primitives fall on the same side.</li>
+		  </ul>
+		  <div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+					<img src="max_planck.png" width="400px"/>
+				</td>
+				<td style="text-align: center;">
+					<img src="lucy.png" width="400px"/>
+				</td>
+			  </tr>
+			  <tr>
+				<td style="text-align: center;">
+					<img src="beast.png" width="400px"/>
+				</td>
+				<td style="text-align: center;">
+					<img src="peter.png" width="400px"/>
+				</td>
+			  </tr>
+			</table>
+		</div>		
+		<div>
+			<h2>With BVH</h2>
+			<pre><code>
+			[PathTracer] Collecting primitives... Done! (0.0029 sec)
+			[PathTracer] Building BVH from 40018 primitives... Done! (0.0069 sec)
+			[PathTracer] Rendering... 100%! (0.0347s)
+			[PathTracer] BVH traced 199740 rays.
+			[PathTracer] Average speed 5.7490 million rays per second.
+			[PathTracer] Averaged 3.328587 intersection tests per ray.
+			</code></pre>
+		</div>
+	
+		<div>
+			<h2>Without BVH</h2>
+			<pre><code>
+			[PathTracer] Collecting primitives... Done! (0.0019 sec)
+			[PathTracer] Building BVH from 40018 primitives... Done! (0.0000 sec)
+			[PathTracer] Rendering... 100%! (38.7694s)
+			[PathTracer] BVH traced 446839 rays.
+			[PathTracer] Average speed 0.0115 million rays per second.
+			[PathTracer] Averaged 8025.000535 intersection tests per ray.
+			</code></pre>
+		</div>
 
+		<div> 
+			When using BVH acceleration, the rendering is completed significantly faster. 
+			This is because we are eliminating a lot of unnecessary intersection checking. 
+			If a ray doesn’t intersect a parent bounding box, it is guaranteed to not intersect 
+			its children bounding boxes and the primitives contained in its leaf nodes. 
+			As a result, BVH acceleration doesn’t continue to check whether a ray intersects 
+			the children or primitives of a bouncing box that it doesn’t intersect. 
+			By eliminating these unnecessary checks, the rendering can happen much faster, 
+			especially for complex geometries that result in many leave nodes due to the vast 
+			number of primitives present.
+		</div>
+		  
 		<h2>Part 3: Direct Illumination</h2>
 		<ul>
 			<li>
@@ -121,7 +199,35 @@
 			</li>
 		</ul>
 		<h2>Part 4: Global Illumination</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<div>
+			<h3>Indirect Lighting Function Walkthrough</h3>  
+			<p><code>at_least_one_bounce_radiance_helper</code>:</p>
+			
+			<ul>
+				<li>1. If <code>depth == 0</code>, return <span class="highlight">black</span> since we don't consider light contribution beyond the maximum ray depth.</li>
+				
+				<li>2. Call <code>one_bounce_radiance(r, isect)</code> to compute <span class="highlight">direct lighting</span>.</li>
+				
+				<li>3. Sampling Indirect Lighting (If <code>depth > 1</code>):
+					<ul>
+						<li>Sample an incoming direction <code>wi</code> using the BSDF: <code>isect.bsdf->sample_f(w_out, &wi, &pdf)</code>.</li>
+						<li>Convert <code>wi</code> to world space (<code>wi2w</code>) for the next bounce.</li>
+						<li>Create a new <span class="highlight">sample ray</span> originating from the hit point <code>hit_p</code> in direction <code>wi2w</code>.</li>
+					</ul>
+				</li>
+				
+				<li>4. Russian Roulette Termination:
+					<ul>
+						<li>Use a coin flip (<code>coin_flip(cpdf)</code>) to decide whether to terminate.</li>
+						<li>If the ray hits another surface, recursively compute <span class="highlight">indirect lighting</span> using <code>at_least_one_bounce_radiance(sample_ray, sample_isect)</code>.</li>
+						<li>Compute the indirect radiance contribution using the rendering equation:
+							<pre>L_indirect = (incoming_radiance * BSDF * cosθ) / (PDF * cpdf)</pre>
+						</li>
+						<li>Accumulate <code>L_out</code> if <code>isAccumBounces</code> is true. Otherwise, return the L value of the last ray.</li>
+					</ul>
+				</li>
+					</ul>
+		</div>		
 
 		<h2>Part 5: Adaptive Sampling</h2>
 		<ul>
