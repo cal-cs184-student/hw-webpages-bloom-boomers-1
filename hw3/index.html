@@ -64,7 +64,17 @@
 			<li>
 				We used Möller Trumbore Algorithm from lecture. Using Möller Trumbore Algorithm we can solve for the unkowns
 				[t, b1, b2], where t is the time of intersection, and b1 and b2 are barycentric coordinates we will use to
-				calculate the normal of the triangle. We store [t, b1, b2]
+				calculate the normal of the triangle. We store [t, b1, b2] in the array result, where result[0] is t, 
+				result[1] is b1, and result[2] is b2. From discussion, we determine if the ray intersected with the triangle
+				by checking t >= 0, 0 <= b1 <= 1, 0 <= b2 <= 1, 0 <= 1 - b1 - b2 <= 1. If the ray intersected with the traingle,
+				we set 
+				r.max_t = result[0], 
+				isect->t = result[0],
+				isect->n = (1 - result[1] - result[2]) * this->n1 + result[1] * this->n2 + result[2] * this->n3,
+				isect->n.normalize(),
+				isect->primitive = this,
+				isect->bsdf = this->get_bsdf(). 
+				Lastly, we return true if the ray intersected with the triangle, false otherwise.
 			</li>
 		</ul>
 		
@@ -171,8 +181,18 @@
 		</div>
 		  
 		<h2>Part 3: Direct Illumination</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
+		<ul>
+			<li>
+				<ul>
+					<li>
+						estimate_direct_lighting_hemisphere: For hemisphere sampling we sample a direction Vector num_samples 
+						times using the function hemisphereSampler->get_sample(). Since the provided vector is in object space,
+						we convert it world space by multiplying it by the o2w matrix, attaining our wi vector. We then create
+						a ray at the provided hit_p, and direction wi (which has been converted to world space).
+					</li>
+				</ul>
+			</li>
+		</ul>
 		<h2>Part 4: Global Illumination</h2>
 		<div>
 			<h3>Indirect Lighting Function Walkthrough</h3>  
@@ -205,8 +225,22 @@
 		</div>		
 
 		<h2>Part 5: Adaptive Sampling</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
+		<ul>
+			<li>
+				Before adaptive sampling, we used a fixed amount of samples per pixel, which resulted in noise. Adaptive
+				sampling addresses that by using a variable number of samples per pixel, depending on whether the pixel
+				has converged or not. This allows us to concentrate more samples on parts of the image that take longer
+				to converge, while saving computation on parts that require less samples to converge. We followed the instructions 
+				from the spec. We define double variables s1, s2, samples_so_far, mean, variance, and I. While
+				I > maxTolerance * mean and samples_so_far < num_samples (which equals ns_aa) we repeat the following loop:
+				we generate a camera ray samplesPerBatch times at (x / sampleBuffer.w, y / sampleBuffer.h). For each of those rays,
+				we compute the radiance vector using est_radiance_global_illumination(sampleRay) and add the radiance vector to the
+				total vector. Then we compute xk = radiance.illum() and set s1 += xk, and s2 += xk*xk, and also increment samples_so_far.
+				After sampling, we set mean = s1 / samples_so_far, variance = (s2 - s1 * s1 / samples_so_far) / (samples_so_far - 1), and
+				I = 1.96 * sqrt(variance) / sqrt(samples_so_far). This is the end of the loop iteration, so if I <= maxTolerance * mean
+				or samples_so_far >= num_samples we will break out of the loop, if not we keep repeating until the pixel converges.
+			</li>
+		</ul>		
 		<h2>(Optional) Part 6: Extra Credit Opportunities</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 		
