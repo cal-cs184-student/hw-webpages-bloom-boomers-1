@@ -28,17 +28,14 @@
 	<body>
 		<div class="container">
 		<h1>CS184/284A Spring 2025 Homework 3 Write-Up</h1>
-		<div style="text-align: center;">Names: </div>
+		<div style="text-align: center;">Names: Mateus Ikezaki and Hima Kolavennu </div>
 
 		<br>
 
-		Link to webpage: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
-		Link to GitHub repository: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
+		Link to webpage: <a href="https://cal-cs184-student.github.io/hw-webpages-bloom-boomers-1/hw3/index.html">https://cal-cs184-student.github.io/hw-webpages-bloom-boomers-1/hw3/index.html</a>
+		<br>
+		Link to GitHub repository: <a href="https://github.com/cal-cs184-student/sp25-hw3-bloom-z">https://github.com/cal-cs184-student/sp25-hw3-bloom-z</a>
 		
-		<figure>
-			<img src="cornell.png" alt="Cornell Boxes with Bunnies" style="width:70%"/>
-			<figcaption>You can add images with captions!</figcaption>
-		</figure>
 
 		<!--
 		We've already added one heading per part, to make your write-up as navigable when grading. Please fit your write-up within these sections!
@@ -289,149 +286,164 @@
 						<li>Accumulate <code>L_out</code> if <code>isAccumBounces</code> is true. Otherwise, return the L value of the last ray.</li>
 					</ul>
 				</li>
+				<br/>
 				<li>
 					With direct and indirect:
+					<div style="display: flex; flex-direction: column; align-items: center;">
+						<table style="width: 100%; text-align: center; border-collapse: collapse;">
+						<tr>
+							<td style="text-align: center;">
+							<img src="spheres_part4_2.png" width="400px"/>
+							</td>
+							<td style="text-align: center;">
+							<img src="bunny_part4_2.png" width="400px"/>
+							</td>
+						</tr>
+						</table>
+					</div>
 				</li>
-				<li>
-					<img src="spheres_part4_2.png" width="400px"/>
-					<img src="bunny_part4_2.png" width="400px"/>
-				</li>
+				<br/>
+				<div style="display: flex; flex-direction: column; align-items: center;">
+					<table style="width: 100%; text-align: center; border-collapse: collapse;">
+					  <tr>
+						<td style="text-align: center;">
+						  <img src="direct_illumination_bunny.png" width="400px"/>
+						  <figcaption>Direct Illumination</figcaption>
+						</td>
+						<td style="text-align: center;">
+						  <img src="pt4_global_illum2.png" width="400px"/>
+						  <figcaption>Indirect Illumination</figcaption>
+						</td>
+					  </tr>
+					</table>
+				</div>
+				<div>Direct lighting only displays the light that travels from the light source without any bounces, so all we see is
+					the box from which the light was produced. Indirect lighting accounts for light that bounced off of other surfaces before reaching
+					the camera. As a result,  in the second image, we can see the walls and the bunny's surface being illuminated, since they are indirectly lit 
+					by the light which has scattered and bounced around the scene.
+				</div>
+				<br/>
 				<li>
 					Unaccumulated Bounces:
+					<div style="display: flex; flex-direction: column; align-items: center;">
+						<table style="width: 100%; text-align: center; border-collapse: collapse;">
+						  <tr>
+							<td style="text-align: center;">
+							  <img src="bunny_part4_4_0.png" width="400px"/>
+							  <figcaption>m = 0</figcaption>
+							</td>
+							<td style="text-align: center;">
+							  <img src="bunny_part4_4_1.png" width="400px"/>
+							  <figcaption>m = 1</figcaption>
+							</td>
+							<td style="text-align: center;">
+								<img src="bunny_part4_4_2.png" width="400px"/>
+								<figcaption>m = 2</figcaption>
+							</td>
+						  </tr>
+						  <tr>
+							<td style="text-align: center;">
+							  <img src="bunny_part4_4_3.png" width="400px"/>
+							  <figcaption>m = 3</figcaption>
+							</td>
+							<td style="text-align: center;">
+							  <img src="bunny_part4_4_4.png" width="400px"/>
+							  <figcaption>m = 4</figcaption>
+							</td>
+							<td style="text-align: center;">
+								<img src="bunny_part4_4_5.png" width="400px"/>
+								<figcaption>m = 5</figcaption>
+							</td>
+						  </tr>
+						</table>
+					</div>
+					In the 2nd and 3rd bounce images, the light appears less radiant on the walls and the bunny’s 
+					surface. This is because as light scatters, it loses intensity with each bounce, resulting in a dimmer effect. 
+					Later bounces contribute weaker indirect illumination compared to the first bounce. Rasterization 
+					considers direct lighting, so it doesn't account for the additional bounces, which capture how light 
+					realistically interacts with the environment.
 				</li>
-				<li>
-					m = 0
-				</li>
-				<li>
-					<img src="bunny_part4_4_0.png" width="400px"/>
-				</li>
-				<li>
-					m = 1
-				</li>
-				<li>
-					<img src="bunny_part4_4_1.png" width="400px"/>
-				</li>
-				<li>
-					m = 2
-				</li>
-				<li>
-					<img src="bunny_part4_4_2.png" width="400px"/>
-				</li>
-				<li>
-					m = 3
-				</li>
-				<li>
-					<img src="bunny_part4_4_3.png" width="400px"/>
-				</li>
-				<li>
-					m = 4
-				</li>
-				<li>
-					<img src="bunny_part4_4_4.png" width="400px"/>
-				</li>
-				<li>
-					m = 5
-				</li>
-				<li>
-					<img src="bunny_part4_4_5.png" width="400px"/>
-				</li>
-				<li>
-					Between the 2nd and 3rd bounce, the image seems darker on the 3rd bounce.
-					The shadows look slightly darker overall. This indicates that the light
-					dies off with each bounce, which contributes to the overall richness of the render,
-					and also shows that pixels eventually converge.
-				</li>
+				<br/>
 				<li>
 					Accumulated Bounces:
+					<div style="display: flex; flex-direction: column; align-items: center;">
+						<table style="width: 100%; text-align: center; border-collapse: collapse;">
+						  <tr>
+							<td style="text-align: center;">
+							  <img src="bunny_part4_4_0_1.png" width="400px"/>
+							  <figcaption>m = 0</figcaption>
+							</td>
+							<td style="text-align: center;">
+							  <img src="bunny_part4_4_1_1.png" width="400px"/>
+							  <figcaption>m = 1</figcaption>
+							</td>
+							<td style="text-align: center;">
+								<img src="bunny_part4_4_2_1.png" width="400px"/>
+								<figcaption>m = 2</figcaption>
+							</td>
+						  </tr>
+						  <tr>
+							<td style="text-align: center;">
+							  <img src="bunny_part4_4_3_1.png" width="400px"/>
+							  <figcaption>m = 3</figcaption>
+							</td>
+							<td style="text-align: center;">
+							  <img src="bunny_part4_4_4_1.png" width="400px"/>
+							  <figcaption>m = 4</figcaption>
+							</td>
+							<td style="text-align: center;">
+								<img src="bunny_part4_4_5_1.png" width="400px"/>
+								<figcaption>m = 5</figcaption>
+							</td>
+						  </tr>
+						</table>
+					</div>
+					Without accumulations, the images appear to be dimmer. We see that with each bounce the change is much more
+					subtle. This is because we are only capturing the contribution of one bounce when rendering an image. 
+					In contrast, using accumulation captures the contribution of all the previous bounces, resulting in a much 
+					more well-lit and radiant image. The room becomes more vibrant because indirect light from the walls and the 
+					bunny continues to reflect and accumulate (for instance, there's more red on the ceiling at m = 5 compared to 
+					m = 2).
 				</li>
-				<li>
-					m = 0
-				</li>
-				<li>
-					<img src="bunny_part4_4_0_1.png" width="400px"/>
-				</li>
-				<li>
-					m = 1
-				</li>
-				<li>
-					<img src="bunny_part4_4_1_1.png" width="400px"/>
-				</li>
-				<li>
-					m = 2
-				</li>
-				<li>
-					<img src="bunny_part4_4_2_1.png" width="400px"/>
-				</li>
-				<li>
-					m = 3
-				</li>
-				<li>
-					<img src="bunny_part4_4_3_1.png" width="400px"/>
-				</li>
-				<li>
-					m = 4
-				</li>
-				<li>
-					<img src="bunny_part4_4_4_1.png" width="400px"/>
-				</li>
-				<li>
-					m = 5
-				</li>
-				<li>
-					<img src="bunny_part4_4_5_1.png" width="400px"/>
-				</li>
-				<li>
-					In comparison to accumulate, we see that with each bounce the change is much more
-					subtle. Instead, when we accumulate with each bounce the room becomes more colorful
-					because the indirect light from the walls and the bunny is bouncing off and accumulating 
-					(for instance, there's more red on the ceiling at m = 5 compared to m = 2).
-				</li>
+				<br/>
 				<li>
 					Samples per pixel:
-				</li>
-				<li>
-					1
-				</li>
-				<li>
-					<img src="bunny_part4_6_1.png" width="400px"/>
-				</li>
-				<li>
-					2
-				</li>
-				<li>
-					<img src="bunny_part4_6_2.png" width="400px"/>
-				</li>
-				<li>
-					4
-				</li>
-				<li>
-					<img src="bunny_part4_6_4.png" width="400px"/>
-				</li>
-				<li>
-					8
-				</li>
-				<li>
-					<img src="bunny_part4_6_8.png" width="400px"/>
-				</li>
-				<li>
-					16
-				</li>
-				<li>
-					<img src="bunny_part4_6_16.png" width="400px"/>
-				</li>
-				<li>
-					64
-				</li>
-				<li>
-					<img src="bunny_part4_6_64.png" width="400px"/>
-				</li>
-				<li>
-					1024
-				</li>
-				<li>
-					<img src="bunny_part4_6_1024.png" width="400px"/>
-				</li>
-				<li>
+					<div style="display: flex; flex-direction: column; align-items: center;">
+						<table style="width: 100%; text-align: center; border-collapse: collapse;">
+						  <tr>
+							<td style="text-align: center;">
+							  <img src="bunny_part4_6_1.png" width="300px"/>
+							  <figcaption>sample-per-pixel = 1</figcaption>
+							</td>
+							<td style="text-align: center;">
+							  <img src="bunny_part4_6_2.png" width="300px"/>
+							  <figcaption>sample-per-pixel = 2</figcaption>
+							</td>
+							<td style="text-align: center;">
+								<img src="bunny_part4_6_4.png" width="300px"/>
+								<figcaption>sample-per-pixel = 4</figcaption>
+							</td>
+							<td style="text-align: center;">
+							  <img src="bunny_part4_6_8.png" width="300px"/>
+							  <figcaption>sample-per-pixel = 8</figcaption>
+							</td>
+						  </tr>
+						  <tr>
+							<td style="text-align: center;">
+							  <img src="bunny_part4_6_16.png" width="300px"/>
+							  <figcaption>sample-per-pixel = 16</figcaption>
+							</td>
+							<td style="text-align: center;">
+								<img src="bunny_part4_6_64.png" width="300px"/>
+								<figcaption>sample-per-pixel = 64</figcaption>
+							</td>
+							<td style="text-align: center;">
+							  <img src="bunny_part4_6_1024.png" width="300px"/>
+							  <figcaption>sample-per-pixel = 1024</figcaption>
+							</td>
+						  </tr>
+						</table>
+					</div>
 					The number of samples per pixel direcly correlate with the level of noise in the pictures.
 					If we look at 1 and compare to 1024 we see that the latter has almost no noise while the former
 					has a considerable amount of noise.
@@ -439,36 +451,7 @@
 			</ul>
 			
 		</div>		
-		<div style="display: flex; flex-direction: column; align-items: center;">
-			<table style="width: 100%; text-align: center; border-collapse: collapse;">
-			  <tr>
-				<td style="text-align: center;">
-				  <img src="pt4_global_illum1.png" width="400px"/>
-				</td>
-				<td style="text-align: center;">
-				  <img src="pt4_global_illum2.png" width="400px"/>
-				</td>
-			  </tr>
-			</table>
-		</div>
-		<div style="display: flex; flex-direction: column; align-items: center;">
-			<table style="width: 100%; text-align: center; border-collapse: collapse;">
-			  <tr>
-				<td style="text-align: center;">
-				  <img src="direct_illumination_bunny.png" width="400px"/>
-				  <figcaption>Direct Illumination</figcaption>
-				</td>
-				<td style="text-align: center;">
-				  <img src="pt4_global_illum2.png" width="400px"/>
-				  <figcaption>Indirect Illumination</figcaption>
-				</td>
-			  </tr>
-			</table>
-		</div>
-		<div>Direct lighting only displays the light that originates from the light source without any bounces, so all we see is
-			the box where the light came from. However, the second image shows the surfaces, where the light bounced off
-			of, so we see where the light traveled from the source.
-		</div>
+		
 		<h2>Part 5: Adaptive Sampling</h2>
 		<ul>
 			<li>
@@ -507,19 +490,6 @@
 			  </tr>
 			</table>
 		</div>
-		<h2>(Optional) Part 6: Extra Credit Opportunities</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-		
-		<h2>Additional Notes (please remove)</h2>
-		<ul>
-			<li>You can also add code if you'd like as so: <code>code code code</code></li>
-			<li>If you'd like to add math equations, 
-				<ul>
-					<li>You can write inline equations like so: \( a^2 + b^2 = c^2 \)</li>
-					<li>You can write display equations like so: \[ a^2 + b^2 = c^2 \]</li>
-				</ul>
-			</li>
-		</ul>
 		</div>
 	</body>
 </html>
