@@ -45,7 +45,7 @@
 		-->
 
 		<h2>Overview</h2>
-		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
+		In this homework we learned how to apply multiple sampling techniques as well as how to apply global illumination. 
 
 		<h2>Part 1: Ray Generation and Scene Intersection</h2>
 		<ul>
@@ -190,6 +190,22 @@
 						we convert it world space by multiplying it by the o2w matrix, attaining our wi vector. We then create
 						a ray at the provided hit_p, and direction wi (which has been converted to world space).
 					</li>
+					<li>
+						estimate_direct_lighting_importance: Instead of sampling uniformly, with direct sampling we sample the
+						light sources directly. For each light in the scene we do following loop: we sample the radiance vector
+						num_samples times (note: we check if the light is a point light first, if it is num_samples = 1, else num_samples 
+						= scene->lights.size() * ns_area_light). We sample the radiance using SceneLight::sample_L, which returns 
+						a wi Vector, the distance to the light and the pdf as pointers. Then, using the returned wi, we cast a ray
+						going from point hit_p, towards wi. If there's no intersection between the ray and the camera, we know light
+						reaches the camera at that direction, so we sample the bsdf vector with isect.bsdf->f and add 
+						(emitted_radiance * brdf * cos_theta(w2o * wi)) / pdf to L_out. We add num_samples to total_samples and 
+						proceed to the next light. After we repeat that for all lights, we return L_out / total_samples. 
+					</li>
+					<li>
+						As shown below, importance sampling yielding less noisy results than hemisphere sampling. In both
+						images, soft shadows look much cleaner when using importance sampling. Hemisphere sampling was, however,
+						faster than importance sampling.
+					</li>
 				</ul>
 			</li>
 		</ul>
@@ -217,6 +233,10 @@
 			  </tr>
 			</table>
 		</div>
+			The screenshots below were taken after part 4, but we can still compare the soft shadows here. 
+			Namely, if we focus on the shadow casted below the bunny, we can see that they become less noisy
+			the more samples we use. For 1 sample, the shadow gets quite grainy as it spreads thinner. 
+			Contrasting that with the 64 image, the shadow doesn't have nearly as much noise as it falls off.
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
@@ -269,7 +289,155 @@
 						<li>Accumulate <code>L_out</code> if <code>isAccumBounces</code> is true. Otherwise, return the L value of the last ray.</li>
 					</ul>
 				</li>
-					</ul>
+				<li>
+					With direct and indirect:
+				</li>
+				<li>
+					<img src="spheres_part4_2.png" width="400px"/>
+					<img src="bunny_part4_2.png" width="400px"/>
+				</li>
+				<li>
+					Unaccumulated Bounces:
+				</li>
+				<li>
+					m = 0
+				</li>
+				<li>
+					<img src="bunny_part4_4_0.png" width="400px"/>
+				</li>
+				<li>
+					m = 1
+				</li>
+				<li>
+					<img src="bunny_part4_4_1.png" width="400px"/>
+				</li>
+				<li>
+					m = 2
+				</li>
+				<li>
+					<img src="bunny_part4_4_2.png" width="400px"/>
+				</li>
+				<li>
+					m = 3
+				</li>
+				<li>
+					<img src="bunny_part4_4_3.png" width="400px"/>
+				</li>
+				<li>
+					m = 4
+				</li>
+				<li>
+					<img src="bunny_part4_4_4.png" width="400px"/>
+				</li>
+				<li>
+					m = 5
+				</li>
+				<li>
+					<img src="bunny_part4_4_5.png" width="400px"/>
+				</li>
+				<li>
+					Between the 2nd and 3rd bounce, the image seems darker on the 3rd bounce.
+					The shadows look slightly darker overall. This indicates that the light
+					dies off with each bounce, which contributes to the overall richness of the render,
+					and also shows that pixels eventually converge.
+				</li>
+				<li>
+					Accumulated Bounces:
+				</li>
+				<li>
+					m = 0
+				</li>
+				<li>
+					<img src="bunny_part4_4_0_1.png" width="400px"/>
+				</li>
+				<li>
+					m = 1
+				</li>
+				<li>
+					<img src="bunny_part4_4_1_1.png" width="400px"/>
+				</li>
+				<li>
+					m = 2
+				</li>
+				<li>
+					<img src="bunny_part4_4_2_1.png" width="400px"/>
+				</li>
+				<li>
+					m = 3
+				</li>
+				<li>
+					<img src="bunny_part4_4_3_1.png" width="400px"/>
+				</li>
+				<li>
+					m = 4
+				</li>
+				<li>
+					<img src="bunny_part4_4_4_1.png" width="400px"/>
+				</li>
+				<li>
+					m = 5
+				</li>
+				<li>
+					<img src="bunny_part4_4_5_1.png" width="400px"/>
+				</li>
+				<li>
+					In comparison to accumulate, we see that with each bounce the change is much more
+					subtle. Instead, when we accumulate with each bounce the room becomes more colorful
+					because the indirect light from the walls and the bunny is bouncing off and accumulating 
+					(for instance, there's more red on the ceiling at m = 5 compared to m = 2).
+				</li>
+				<li>
+					Samples per pixel:
+				</li>
+				<li>
+					1
+				</li>
+				<li>
+					<img src="bunny_part4_6_1.png" width="400px"/>
+				</li>
+				<li>
+					2
+				</li>
+				<li>
+					<img src="bunny_part4_6_2.png" width="400px"/>
+				</li>
+				<li>
+					4
+				</li>
+				<li>
+					<img src="bunny_part4_6_4.png" width="400px"/>
+				</li>
+				<li>
+					8
+				</li>
+				<li>
+					<img src="bunny_part4_6_8.png" width="400px"/>
+				</li>
+				<li>
+					16
+				</li>
+				<li>
+					<img src="bunny_part4_6_16.png" width="400px"/>
+				</li>
+				<li>
+					64
+				</li>
+				<li>
+					<img src="bunny_part4_6_64.png" width="400px"/>
+				</li>
+				<li>
+					1024
+				</li>
+				<li>
+					<img src="bunny_part4_6_1024.png" width="400px"/>
+				</li>
+				<li>
+					The number of samples per pixel direcly correlate with the level of noise in the pictures.
+					If we look at 1 and compare to 1024 we see that the latter has almost no noise while the former
+					has a considerable amount of noise.
+				</li>
+			</ul>
+			
 		</div>		
 
 		<h2>Part 5: Adaptive Sampling</h2>
@@ -287,8 +455,29 @@
 				After sampling, we set mean = s1 / samples_so_far, variance = (s2 - s1 * s1 / samples_so_far) / (samples_so_far - 1), and
 				I = 1.96 * sqrt(variance) / sqrt(samples_so_far). This is the end of the loop iteration, so if I <= maxTolerance * mean
 				or samples_so_far >= num_samples we will break out of the loop, if not we keep repeating until the pixel converges.
+				Finally we update the pixel with total / samples_so_far and set sampleCountBuffer[x + y * sampleBuffer.w] = samples_so_far.
 			</li>
 		</ul>		
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="spheres.png" width="400px"/>
+				</td>
+				<td style="text-align: center;">
+				  <img src="spheres_rate.png" width="400px"/>
+				</td>
+			  </tr>
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="bunny.png" width="400px"/>
+				</td>
+				<td style="text-align: center;">
+				  <img src="bunny_rate.png" width="400px"/>
+				</td>
+			  </tr>
+			</table>
+		</div>
 		<h2>(Optional) Part 6: Extra Credit Opportunities</h2>
 		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 		
