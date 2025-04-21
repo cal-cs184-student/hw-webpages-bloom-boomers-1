@@ -1,0 +1,93 @@
+<html>
+	<head>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=default'></script>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+		<style>
+			h1 {
+				text-align: center;
+			}
+
+			.container {
+				margin: 0 auto;
+				padding: 60px 20%;
+			}
+
+			figure {
+				text-align: center;
+			}
+
+			img {
+				display: inline-block;
+			}
+
+			body {
+				font-family: 'Inter', sans-serif;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+		<h1>CS184 Spring 2025 Final Project Milestone</h1>
+		<h1>Fluid Simulation and Rendering</h1>
+		<ul>
+			Team Members
+			<li>
+				Arhaan Aggarwal-3036541288
+			</li>
+			<li>
+				Riley Udagawa-3037299846
+			</li>
+			<li>
+				Mateus Ikezaki-3037194420
+			</li>
+			<li>
+				Sirawich Smitsomboon-3037647420
+			</li>
+		</ul>
+
+		<h2>Summary</h2>
+
+		As we work towards our final goal of not only accurately simulating fluid physics, but also rendering 
+		it, we split this project into 2 parts: physics and rendering. Our goal for the milestone was finishing 
+		as much as possible the physics of the fluid. To be more precise, that meant implementing fundamental 
+		data structures such as the Fluid and the Particles that make up the fluid, representing the particles as 
+		simple spheres, and allowing particles to bounce off boundaries and influence nearby particles (repeling
+		close ones, while attracting others that are further away). Although we accomplished that goal, there is 
+		still improvements that can be made to the physics of the particles.
+
+		<h2>Preliminary Results</h2>
+
+		As of now we are able to simulate fluids with about 1000 particles without siginificant FPS drops. We start 
+		seeing FPS drops at around 1500 particles. The particles themselves also bounce off of boundaries, and hold some 
+		influence to one another. We are also able to modify the fluid's properties in real time through the GUI, which 
+		was initially a target deliverable. 
+		
+		<h2>Reflection</h2>
+
+		Although there is room for improvement, we are quite satisfied with our progress, considering our group had a 
+		last minute change of project proposal. Moving forward, we aim to tweak the physics in order to achieve better 
+		results, as well as explore optimization options to further improve performance. We are nonetheless on track to 
+		delivering on our target goals.  
+		
+		<h2>Updated Schedule: </h2>
+		<table>
+			<tr>
+				<td>04/21-04/28</td>
+				<td>
+					Tweak particle physics and implement Ray marching rendering. Particles should clump up together and look like a fluid together 
+					(instead of a group of individual particles). Fluid doesn't need to reflect or refract light at this
+					stage.
+				</td>
+			</tr>
+			<tr>
+				<td>04/28-05/04</td>
+				<td>
+					Implement refraction and reflection. Liquid should look convincing and correctly refract and reflect 
+					light from the light source and from the environment. Build test scene that allows user to see how 
+					light from the environment influences the fluid. Finish report and video demo, and make preparations for 
+					the presentation.
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
