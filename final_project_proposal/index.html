@@ -1,0 +1,167 @@
+<html>
+	<head>
+		<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=default'></script>
+		<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+		<style>
+			h1 {
+				text-align: center;
+			}
+
+			.container {
+				margin: 0 auto;
+				padding: 60px 20%;
+			}
+
+			figure {
+				text-align: center;
+			}
+
+			img {
+				display: inline-block;
+			}
+
+			body {
+				font-family: 'Inter', sans-serif;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+		<h1>CS184 Spring 2025 Final Project Proposal</h1>
+		<h1>Fluid Simulation and Rendering</h1>
+		<ul>
+			Team Members
+			<li>
+				Arhaan Aggarwal-3036541288
+			</li>
+			<li>
+				Riley Udagawa-3037299846
+			</li>
+			<li>
+				Mateus Ikezaki-3037194420
+			</li>
+			<li>
+				Sirawich Smitsomboon-3037647420
+			</li>
+		</ul>
+
+		<br>
+
+		<h2>Summary</h2>
+
+		We aim to write a real time fluid simulation built on top of the Homework 4 structure. Our goal is 
+		to also write our own rendering engine.
+
+		<br>
+
+		<h2>Problem Description</h2>
+
+		Fluid simulation is a prevalent topic in computer graphics. The accurate depiction of liquids holds value in 
+		entertainment, education, simulations, and other fields. Its implementation, however, is a challenging one. 
+		Realistically simulating fluids is computationally expensive, primarily due to the sheer number of particles and
+		calculations that need to be accounted for to make up a beliavable fluid. Although 
+		<a href="https://yidingjiang.github.io/cs184sp18_final/">past projects</a> have circumvented this issue by allocating
+		the rendering of the fluid to external rendering engines such as Blender, our project aims to implement our own 
+		rendering engine.
+		<br>
+		<br>
+		As previously mentioned fluid simulation computations are expensive, thus we must apply algorithms that are not only
+		going to optimize calculations, but also do so in a GPU friendly manner since the GPU will handle most of the shading.
+		One of the algorithms we can implement to ensure a smooth simulation is making use of a 3D grid and grouping particles by
+		hashing them by their respective grid cell, much like what we did in part 4 of homework 4. This algorithm is explained
+		in further detail <a href="https://developer.download.nvidia.com/assets/cuda/files/particles.pdf">here</a>, but basically
+		it allows us to cut down unnecessary calculations, while also providing the GPU with a fixed number of particles that 
+		will be used in the shading part later on.
+		<br>
+		<br>
+		To render liquids we will make use of the Ray Marching algorithm, more specifically Sphere Tracing, which is described
+		<a href="https://www.youtube.com/watch?v=Cp5WWtMoeKg">here</a>. Ray marching is a faster version of ray tracing,
+		which will allow us to render complex reflections and refractions of the liquid in real time. 
+
+		<h2>Goals and Deliverables: </h2>
+		<h2>Minimum Viable Deliverables (for base grade):</h2>
+		<ul>
+			<li>
+				Realistic fluid physics (fluid holds itself together and bounces off of boundaries)
+			</li>
+			<li>
+				Realistic fluid rendering (including reflection and refraction of light source and environment)
+			</li>
+			<li>
+				Test scene that allows user to see reflection and refraction of environment
+			</li>
+			<li>
+				Include a webpage report and flythrough demo video.
+			</li>
+		</ul>
+		<h2>Target Deliverables (for full grade):</h2>
+		<ul>
+			<li>
+				GUI that allows user to change fluid's properties, such as color, viscosity, and density in real time
+			</li>
+			<li>
+				Fluid can interact with spheres and planes 
+			</li>
+		</ul>
+		<h2>Stretch Goals: </h2>
+		<ul>
+			<li>
+				Add ocean foam to fluid 
+			</li>
+			<li>
+				Interactive feature that allows user to scoop up liquid 
+			</li>
+		</ul>
+		
+		<h2>Schedule: </h2>
+		<table>
+			<tr>
+				<th>Week</th>
+				<th>Tasks</th>
+			</tr>
+			<tr>
+				<td>04/14-04/20</td>
+				<td>
+					Implement basic particle physics (particles correctly interact with boundaries and with each other).
+					Simulation should not be to taxing for the GPU. Particles should have customizable color for 
+					debugging purposes. 
+				</td>
+			</tr>
+			<tr>
+				<td>04/21-04/28</td>
+				<td>
+					Implement Ray marching rendering. Particles should clump up together and look like a fluid together 
+					(instead of a group of individual particles). Fluid doesn't need to reflect or refract light at this
+					stage.
+				</td>
+			</tr>
+			<tr>
+				<td>04/28-05/04</td>
+				<td>
+					Implement refraction and reflection. Liquid should look convincing and correctly refract and reflect 
+					light from the light source and from the environment. Build test scene that allows user to see how 
+					light from the environment influences the fluid. Finish report and video demo, and make preparations for 
+					the presentation.
+				</td>
+			</tr>
+		</table>
+		<h2>Resources: </h2>
+		<ul>
+			<li>
+				Code Frameworks: Homework 4: Cloth Sim
+			</li>
+			<li>
+				Hardware: Personal/Local GPUs
+			</li>
+		</ul>
+		<h2>External Resources:</h2>
+		<ul>
+			<li>https://www.youtube.com/watch?v=rSKMYc1CQHE&t=2556s</li>
+			<li>https://www.youtube.com/watch?v=kOkfC5fLfgE</li>
+			<li>https://www.youtube.com/watch?v=Cp5WWtMoeKg</li>
+			<li>https://developer.download.nvidia.com/assets/cuda/files/particles.pdf</li>
+			<li>https://ashmchiu.github.io/cs184-proj-writeup/</li>
+			<li>https://yidingjiang.github.io/cs184sp18_final/</li>
+		</ul>
+	</body>
+</html>
